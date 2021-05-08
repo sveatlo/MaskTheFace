@@ -1,3 +1,3 @@
 # MaskTheFace
 
-fork of [MaskTheFace](https://github.com/aqeelanwar/MaskTheFace)
+refactor of [MaskTheFace](https://github.com/aqeelanwar/MaskTheFace) to python package

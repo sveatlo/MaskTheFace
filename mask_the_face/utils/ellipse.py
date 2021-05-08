@@ -1,11 +1,11 @@
-# Author: aqeelanwar 
+# Author: aqeelanwar
 # Created: 4 May,2020, 1:30 AM
 # Email: aqeel.anwar@gatech.edu
 
 import numpy as np
 from numpy.linalg import eig, inv
 
-def fitEllipse(x,y):
+def fit_ellipse(x,y):
     x = x[:,np.newaxis]
     y = y[:,np.newaxis]
     D =  np.hstack((x*x, x*y, y*y, x, y, np.ones_like(x)))
@@ -51,14 +51,3 @@ def ellipse_angle_of_rotation2( a ):
             return np.arctan(2*b/(a-c))/2
         else:
             return np.pi/2 + np.arctan(2*b/(a-c))/2
-
-# a = fitEllipse(x,y)
-# center = ellipse_center(a)
-# #phi = ellipse_angle_of_rotation(a)
-# phi = ellipse_angle_of_rotation2(a)
-# axes = ellipse_axis_length(a)
-#
-# print("center = ",  center)
-# print("angle of rotation = ",  phi)
-# print("axes = ", axes)
-

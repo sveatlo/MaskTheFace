@@ -16,14 +16,22 @@ setuptools.setup(
         "Bug Tracker": "https://github.com/sveatlo/MaskTheFace",
     },
     classifiers=[],
-    package_dir={"": "mask_the_face"},
+    package_dir={"": "src"},
     package_data={
-        "": ["masks/*"],
+        "": ["masks/*", "masks/**/*", "masks/**/**/*"],
     },
     exclude_package_data={"": ["dlib_models/*"]},
     include_package_data=True,
-    packages=setuptools.find_packages(where="mask_the_face"),
+    packages=setuptools.find_packages(where="src"),
     python_requires=">=3.7",
+    install_requires=[
+        "dlib",
+        "requests",
+        "opencv-python",
+        "numpy",
+        "tqdm",
+        "Pillow",
+    ]
 )
 
 

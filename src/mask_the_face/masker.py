@@ -6,7 +6,7 @@ import dlib
 import cv2
 import numpy as np
 # local imports
-import utils
+import mask_the_face.utils as utils
 
 module_dir_path = os.path.dirname(os.path.realpath(__file__))
 

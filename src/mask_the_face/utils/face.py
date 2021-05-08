@@ -4,8 +4,8 @@ import os
 from PIL import Image, ImageDraw
 import cv2
 # local imports
-from utils.ellipse import *
-from utils.misc import *
+from mask_the_face.utils.ellipse import *
+from mask_the_face.utils.misc import *
 
 def shape_to_landmarks(shape):
     face_landmarks = {}

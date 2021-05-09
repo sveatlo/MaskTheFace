@@ -1,1 +1,1 @@
-from mask_the_face.masker import Masker
+from .masker import Masker

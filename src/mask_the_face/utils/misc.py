@@ -52,4 +52,9 @@ def line_intersection(line1, line2):
 
     return flag, x, y
 
+def remove_suffix(s: str, suffix: str):
+    if not s.endswith(suffix):
+        return s
+
+    return s[:-len(suffix)]
 

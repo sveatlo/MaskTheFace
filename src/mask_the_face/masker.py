@@ -19,6 +19,10 @@ class Masker(object):
         super().__init__()
 
         if not os.path.exists(predictor_model_path):
+            model_path_dir = os.path.dirname(predictor_model_path)
+            if not os.path.exists(model_path_dir):
+                os.makedirs(model_path_dir)
+
             utils.download_dlib_model(predictor_model_path)
 
         self.detector = dlib.get_frontal_face_detector()
@@ -27,6 +31,20 @@ class Masker(object):
         self._masks_dir = os.path.join(module_dir_path, "masks")
         self._masks_cfg = self._read_masks_cfg(os.path.join(self._masks_dir,"masks.cfg"))
         self._angle_threshold = 13
+
+    def apply_mask_file(self, image_path, mask_type="surgical", mask_pattern=None, mask_pattern_weight=0.5, mask_color=None, mask_color_weight=0.5):
+        """
+        Apply mask to an image from file.
+
+        :param image_path: Path to the image file to be loaded
+        :returns: Tuple(masked_image, image_mask, face_masks, face_positions)
+
+        """
+        image = cv2.imread(image_path)
+        if image is None:
+            raise Exception("image not loaded")
+
+        return self.apply_mask(image, mask_type=mask_type, mask_pattern=mask_pattern, mask_pattern_weight=mask_pattern_weight, mask_color=mask_color, mask_color_weight=mask_color_weight)
 
     def apply_mask(self, image, mask_type="surgical", mask_pattern=None, mask_pattern_weight=0.5, mask_color=None, mask_color_weight=0.5):
         """TODO: Docstring for apply_mask.
@@ -64,6 +82,7 @@ class Masker(object):
             #  print(mask.shape, face_mask.shape)
             mask = cv2.bitwise_or(mask, face_mask)
 
+        mask = np.expand_dims(mask, axis=2)
         return image, mask, masks, face_locations
 
     def _mask_face(self, image, face_location, six_points, angle, mask_type="surgical", mask_pattern=None, mask_pattern_weight=0.5, mask_color=None, mask_color_weight=0.5):
@@ -169,8 +188,8 @@ class Masker(object):
                 continue
 
             mask_type = section_name
-            mask_type = mask_type.removesuffix("_left")
-            mask_type = mask_type.removesuffix("_right")
+            mask_type = utils.remove_suffix(mask_type, "_left")
+            mask_type = utils.remove_suffix(mask_type, "_right")
 
             mask_orientation = "front"
             if "_left" in section_name:

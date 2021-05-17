@@ -82,7 +82,6 @@ class Masker(object):
             #  print(mask.shape, face_mask.shape)
             mask = cv2.bitwise_or(mask, face_mask)
 
-        mask = np.expand_dims(mask, axis=2)
         return image, mask, masks, face_locations
 
     def _mask_face(self, image, face_location, six_points, angle, mask_type="surgical", mask_pattern=None, mask_pattern_weight=0.5, mask_color=None, mask_color_weight=0.5):
@@ -147,7 +146,9 @@ class Masker(object):
         M, _ = cv2.findHomography(mask_line, six_points)
         mask_image = cv2.warpPerspective(mask_image, M, (h, w))
         dst_mask_points = cv2.perspectiveTransform(mask_line.reshape(-1, 1, 2), M)
-        mask_binary = mask_image[:, :, 3]
+        #  mask_binary = mask_image[:, :, 3]
+        _, mask_binary = cv2.threshold(mask_image, 127, 255, cv2.THRESH_BINARY)
+        mask_binary = mask_binary[:,:,3]
 
         # match brightness+saturation
         #  mask_image = utils.match_brightness(face_crop_img, mask_image)
